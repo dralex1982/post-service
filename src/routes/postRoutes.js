@@ -4,7 +4,7 @@ import * as controller from '../controller/postController.js';
 
 const router = Router();
 
-router.post('/post', controller.addPost)
+router.post('/post/:user', controller.addPost)
 router.get('/post/:postId', controller.findPostById)
 router.patch('/post/:postId/like', controller.addLike)
 router.get('/posts/author/:user', controller.findPostsByAuthor)
