@@ -13,3 +13,5 @@ router.delete('/post/:postId', controller.deletePost)
 router.get('/posts/tags', controller.findPostsByTags)
 router.get('/posts/period', controller.findPostsByPeriod)
 router.patch('/post/:postId', controller.updatePost)
+
+export default router;
