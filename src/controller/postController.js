@@ -21,22 +21,21 @@ export const addLike = async (req, res) => {
 }
 
 export const findPostsByAuthor = async (req, res) => {
-    const posts = service.findPostByAuthor(req.params.user);
+    const posts = await service.findPostByAuthor(req.params.user);
     return res.json(posts)
 }
 
 export const addComment = async (req, res) => {
     const {postId, commenter} = req.params;
     const comment = req.body;
-    const success = await service.addComment(postId, commenter, comment);
-    const post = findPostById(postId);
-    if (success) {
+    const post = await service.addComment(postId, commenter, comment);
+    if (post) {
         return res.status(200).json(post)
-    }
+    } else return res.status(404).send()
 }
 
 export const deletePost = async (req, res) => {
-    const post = service.deletePost(req.params.postId)
+    const post = await service.deletePost(req.params.postId)
     if (post) {
         return res.json(post)
     } else return res.status(404).send(
@@ -44,7 +43,7 @@ export const deletePost = async (req, res) => {
             "timestamp": new Date().toISOString(),
             "status": 404,
             "error": "Not Found",
-            "message": "Post with id = ${req.params.postId} not found",
+            "message": `Post with id = ${req.params.postId} not found`,
             "path": req.path
         }
     )
@@ -63,7 +62,7 @@ export const findPostsByPeriod = async (req, res) => {
 }
 
 export const updatePost = async (req, res) => {
-    const post = service.updatePost(req.params.postId);
+    const post = await service.updatePost(req.params.postId, req.body);
     if (post) {
         return res.json(post);
     } else return res.status(404).send()
