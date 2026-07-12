@@ -7,7 +7,7 @@ export const findDuplicate = async (title, content, author) => {
 export const createPost = async (postData) => {
     // const post = new Post(postData);
     // return post.save();
-    return await Post.create(postData);
+    return Post.create(postData);
 }
 
 export const findPostById = postId => Post.findById(postId)
@@ -15,13 +15,11 @@ export const findPostById = postId => Post.findById(postId)
 export const deletePost = postId => Post.findByIdAndDelete(postId).exec()
 
 export const addLike = async (postId) => {
-    return Post.updateOne(
-        {_id: postId},
-        {$inc: {likes: 1}});
+    return Post.findByIdAndUpdate(postId, {$inc: {likes: 1}}, {returnDocument: "after"}).exec();
 }
 
 export const findPostsByAuthor = async (author) => {
-    return Post.find({author}).exec();
+    return Post.find({author: new RegExp(`^${author}`, 'i')}).exec();
 }
 
 export const addComment = async (postId, data) => {
@@ -47,5 +45,8 @@ export const findPostsByPeriod = async (dateFrom, dateTo) => {
 }
 
 export const updatePost = async (postId, data) => {
-    return Post.findByIdAndUpdate(postId, {...data}, {returnDocument: 'after'}).exec();
+    const tags = data.tags ?? [];
+    delete data.tags;
+    data = {...data, $addToSet: {tags}};
+    return Post.findByIdAndUpdate(postId, data, {returnDocument: 'after'}).exec();
 }
