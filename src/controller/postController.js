@@ -7,17 +7,22 @@ export const addPost = async (req, res) => {
     }
 }
 
-export const findPostById = async (req, res) => {
-    const post = await service.findPostById(req.params.postId)
-    if (post) {
+export const findPostById = async (req, res, next) => {
+    try {
+        const post = await service.findPostById(req.params.postId)
         return res.json(post)
-    } else return res.status(404).send()
+    } catch (e) {
+        return next(e)
+    }
 }
 
-export const addLike = async (req, res) => {
-    if (service.addLike(req.params.postId))
+export const addLike = async (req, res, next) => {
+    try {
+        await service.addLike(req.params.postId)
         return res.status(204).send()
-    else return res.status(404).send()
+    } catch (e) {
+        return next(e)
+    }
 }
 
 export const findPostsByAuthor = async (req, res) => {
@@ -25,28 +30,24 @@ export const findPostsByAuthor = async (req, res) => {
     return res.json(posts)
 }
 
-export const addComment = async (req, res) => {
-    const {postId, commenter} = req.params;
-    const comment = req.body;
-    const post = await service.addComment(postId, commenter, comment);
-    if (post) {
-        return res.status(200).json(post)
-    } else return res.status(404).send()
+export const addComment = async (req, res, next) => {
+    try {
+        const {postId, commenter} = req.params;
+        const comment = req.body;
+        const post = await service.addComment(postId, commenter, comment);
+        return res.json(post)
+    } catch (e) {
+        return next(e)
+    }
 }
 
-export const deletePost = async (req, res) => {
-    const post = await service.deletePost(req.params.postId)
-    if (post) {
+export const deletePost = async (req, res, next) => {
+    try {
+        const post = await service.deletePost(req.params.postId)
         return res.json(post)
-    } else return res.status(404).send(
-        {
-            "timestamp": new Date().toISOString(),
-            "status": 404,
-            "error": "Not Found",
-            "message": `Post with id = ${req.params.postId} not found`,
-            "path": req.path
-        }
-    )
+    } catch (e) {
+        return next(e)
+    }
 }
 
 export const findPostsByTags = async (req, res) => {
@@ -61,9 +62,11 @@ export const findPostsByPeriod = async (req, res) => {
     return res.json(posts);
 }
 
-export const updatePost = async (req, res) => {
-    const post = await service.updatePost(req.params.postId, req.body);
-    if (post) {
+export const updatePost = async (req, res, next) => {
+    try {
+        const post = await service.updatePost(req.params.postId, req.body);
         return res.json(post);
-    } else return res.status(404).send()
+    } catch (e) {
+        return next(e)
+    }
 }
