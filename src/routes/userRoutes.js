@@ -1,14 +1,15 @@
 import {Router} from "express";
 
 import * as controller from '../controller/userController.js';
+import validate from "../middlewares/validation.middleware.js";
 
 const router = Router();
 
-router.post('/account/register', controller.addUser);
-router.post('/account/login', controller.login);
-router.delete('/account/user/:user', controller.deleteUser);
-router.patch('/account/user/:user', controller.updateUser);
-router.patch('/account/user/:user/role/:role', controller.addRole);
-router.delete('/account/user/:user/role/:role', controller.deleteRole);
-router.patch('/account/password', controller.changePassword);
-router.get('/account/user/:user', controller.getUser);
+router.post('/register', validate('register'),controller.addUser);
+router.post('/login', controller.login);
+router.delete('/user/:user', controller.deleteUser);
+router.patch('/user/:user', validate('updateUser'),controller.updateUser);
+router.patch('/user/:user/role/:role', validate('changeRole', 'params'), controller.addRole);
+router.delete('/user/:user/role/:role', validate('changeRole', 'params'), controller.deleteRole);
+router.patch('/password', controller.changePassword);
+router.get('/user/:user', controller.getUser);

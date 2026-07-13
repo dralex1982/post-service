@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/forum',postRoutes)
+app.use('/account',postRoutes)
 
 app.use(errorHandler);
 
