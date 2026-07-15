@@ -12,11 +12,11 @@ const UserAccountSchema = new Schema({
         required: true,
         select: false,
     },
-    firstname:{
+    firstName:{
         type: String,
         required: true,
     },
-    lastname:{
+    lastName:{
         type: String,
         required: true,
     },
@@ -29,7 +29,8 @@ const UserAccountSchema = new Schema({
     toJSON:{
         transform(value, ret) {
             ret.login = value._id;
-            delete value._id;
+            delete ret._id;
+            delete ret.password;
         }
     }
 })

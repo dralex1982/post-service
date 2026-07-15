@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from "mongoose";
 import postRoutes from "./routes/postRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import config from "./configuration/config.js";
 import errorHandler from "./middlewares/error.middleware.js";
 
@@ -9,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/forum',postRoutes)
-app.use('/account',postRoutes)
+app.use('/account',userRoutes)
 
 app.use(errorHandler);
 

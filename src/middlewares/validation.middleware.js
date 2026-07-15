@@ -26,12 +26,12 @@ const schemas = {
         lastName: Joi.string().required(),
     }),
     updateUser: Joi.object({
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        firstName: Joi.string(),
+        lastName: Joi.string(),
     }),
     changeRoles: Joi.object({
-        login: Joi.string().required(),
-        roles: Joi.string().valid(USER, MODERATOR, ADMIN).insensitive().required(),
+        user: Joi.string().required(),
+        role: Joi.string().valid(USER, MODERATOR, ADMIN).insensitive().required(),
     })
 }
 

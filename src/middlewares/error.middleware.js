@@ -1,6 +1,8 @@
 const errorHandler = (err, req, res, next) => {
     console.log(err.stack);
-    if(err.message?.toLowerCase().includes('no post found')) {
+    const messages = ['no post found', 'does not exist'];
+    if (messages.some(message => err.message.includes(message)))
+    {
         return res.status(404).json({
             "timestamp": new Date().toISOString(),
             "status": 404,
@@ -9,6 +11,16 @@ const errorHandler = (err, req, res, next) => {
             "path": req.path
         });
     }
+    if(err.message?.toLowerCase().includes('already exists')) {
+        return res.status(409).json({
+            "timestamp": new Date().toISOString(),
+            "status": 409,
+            "error": "Conflict",
+            "message": err.message,
+            "path": req.path
+        });
+    }
+
     return res.status(500).json({
         "timestamp": new Date().toISOString(),
         "status": 504,
