@@ -10,12 +10,8 @@ export const register = async (req, res, next) => {
 }
 
 export const login = async (req, res) => {
-    try {
-        const user = await service.login(req.auth);
-        return res.json(user);
-    } catch (error) {
-        return res.status(401).send();
-    }
+    const userAccount = await service.getUser(req.principal.username);
+    return res.json(userAccount);
 }
 
 export const deleteUser = async (req, res, next) => {
@@ -55,12 +51,8 @@ export const deleteRole = async (req, res, next) => {
 }
 
 export const changePassword = async (req, res) => {
-    try {
-        const user = await service.changePassword(req.auth.user, req.body);
-        return res.status(204).send(user);
-    } catch (error) {
-        return res.status(401).send();
-    }
+    await service.changePassword(req.principal.username, req.body.password);
+    return res.sendStatus(204);
 }
 
 export const getUser = async (req, res, next) => {
