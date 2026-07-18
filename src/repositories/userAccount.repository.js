@@ -18,3 +18,6 @@ export const addRole = async (user, role) => UserAccount
 export const removeRole = async (user, role) => UserAccount
     .findByIdAndUpdate(user, {$pull: {roles: role}}, {returnDocument: "after"})
     .select({firstName:0, lastName:0}).exec();
+
+export const changePassword = async (user, newPassword) => UserAccount
+    .findByIdAndUpdate(user, {password: newPassword}, {returnDocument: "after"}).exec();
