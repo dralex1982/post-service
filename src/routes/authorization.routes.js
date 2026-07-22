@@ -8,4 +8,7 @@ router.all('/account/user/:user/role/:role', hasRole(ADMIN))
 router.patch('/account/user/:user', isLogin("user"))
 router.delete('/account/user/:user', isLoginOrAdmin("user"))
 
-export default router;
+router.post('/forum/post/:author', isLogin("author"))
+router.patch('/forum/post/:postId/comment/:author', isLogin("author"))
+
+export default router

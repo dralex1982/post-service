@@ -23,7 +23,7 @@ export const addLike = async(postId) => {
 export const findPostByAuthor = async (author) => await postRepository.findPostsByAuthor(author);
 
 export const addComment = (postId, commenter, comment) => {
-    return postRepository.addComment(postId, {user: commenter, ...comment});
+    return postRepository.addComment(postId, {user: commenter, comment});
 }
 export const deletePost = (postId) => {
     const post = postRepository.deletePost(postId);
